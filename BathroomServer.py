@@ -21,6 +21,24 @@ def hello():
     return 'Hello, welcome to Bathroom Server'
 
 
+# Check whether this user has made a reservation
+def checkUserReservation(user):
+    for user_id in reserveBathroom:
+        if user == user_id:
+            return True
+    return False
+
+
+# check the users whose reservation have gone over limit
+def remove_reservation_waisters():
+    threading.Timer(10.0, remove_reservation_waisters).start()
+    for person in reserve_bathroom:
+        difference = now.timestamp() - person.date.timestamp()
+        if person.date is not None and difference >= thirty_minutes_seconds:
+            removed_user = reserve_bathroom.popLeft()
+            # TO-DO: alert the removed user, their reservation has limit
+
+
 # Constraints only 1 person can have 1 reservation at a time
 @app.route('/reserve', methods=['POST'])
 def reserve_bathroom():
@@ -92,30 +110,10 @@ def bathroom_availability():
                 data = {'Error': 'Status code: {r.status_code}'}
                 return jsonify(data)
             else:
-                return jsonify({})
+                return jsonify()
         else:
             data = {'Error': 'Access denied'}
             return jsonify(data)
-
-
-# Check whether this user has made a reservation
-@staticmethod
-def checkUserReservation(user):
-    for user_id in reserveBathroom:
-        if user == user_id:
-            return True
-    return False
-
-
-# check the users whose reservation have gone over limit
-@staticmethod
-def remove_reservation_waisters():
-    threading.Timer(10.0, remove_reservation_waisters).start()
-    for person in reserve_bathroom:
-        difference = now.timestamp() - person.date.timestamp()
-        if person.date is not None and difference >= thirty_minutes_seconds:
-            removed_user = reserve_bathroom.popLeft()
-            # TO-DO: alert the removed user, their reservation has limit
 
 
 if __name__ == '__main__':
