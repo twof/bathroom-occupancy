@@ -107,7 +107,7 @@ def bathroom_availability():
             data = {'text': 'Bathroom available!'}
             if bathroomOccupied:
                 data = {'text': 'Bathroom not available!'}
-            r = requests.post(response_url, json.dumps(data))
+                r = requests.post(response_url, json.dumps(data))
             if r.status_code != requests.codes.ok:
                 data = {'Error': 'Status code: {r.status_code}'}
                 return jsonify(data)
