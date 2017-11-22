@@ -1,4 +1,4 @@
 class Person:
-    def init(self, user, date=None):
+    def __init__(self, user, date=None):
         self.user = user
         self.date = date
