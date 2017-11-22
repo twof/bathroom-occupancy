@@ -1,1 +1,1 @@
-web: gunicorn BathroomServer:app --log-file=-
+web: gunicorn BathroomServer:bathroom-occupancy --log-file=-
