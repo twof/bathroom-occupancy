@@ -1,1 +1,1 @@
-web: BathroomServer:bathroom-occupancy --log-file=-
+web: python BathroomServer.py --log-file=-
