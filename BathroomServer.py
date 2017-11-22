@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from collections import deque
-import Person
+from Person import Person
 import json
 import os
 import requests
