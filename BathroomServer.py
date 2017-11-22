@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from collections import deque
 import Person
+import json
 import datetime
 import threading
 app = Flask(__name__)
@@ -10,12 +11,18 @@ bathroomOccupied = False
 now = datetime.datetime.now()
 thirty_minutes_seconds = 30 * 60 * 60
 
+@app.route('/')
+def hello():
+    return 'Hello, welcome to Bathroom Server'
+
 ## Constraints only 1 person can have 1 reservation at a time
 @app.route('/reserve', methods = ['POST'])
 def reserve_bathroom():
     error = None
     if request.method == 'POST':
-        data = request.form.keys()[0]
+        data = list(request.values.to_dict().keys())[0]
+        print(data)
+        data = json.loads(data)
         user = data.user_id
         ## first check, whether this user has a reservation
         userReservation = checkUserReseravation(user)
@@ -29,7 +36,7 @@ def reserve_bathroom():
 @app.route('/available', methods = ['POST'])
 def bathroom_availability():
     if request.method == 'POST':
-        data = request.form.keys()[0]
+        data = request.data
         bathroomOccupied = data.occupancy
 
 
