@@ -69,12 +69,6 @@ def reserve_bathroom():
                 # new user reservation
                 reserveBathroom.append(Person(user))
                 data = {'text': 'Your reservation has been made!'}
-                # r = requests.post(dm_url, json.dumps(data))
-                # if r.status_code != requests.codes.ok:
-                #     data = {'Error': 'Status code: {r.status_code}'}
-                #     return jsonify(data)
-                # else:
-                #     return
                 if response_url != '':
                     r = requests.post(response_url, json.dumps(data))
                     if r.status_code != requests.codes.ok:
