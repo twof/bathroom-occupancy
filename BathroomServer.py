@@ -51,3 +51,6 @@ def remove_reservation_waisters():
         if person.date is not None && now.timestamp() - person.date.timestamp() >= thirty_minutes_seconds:
             removed_user = reserve_bathroom.popLeft()
             # TO-DO: alert the removed user, their reservation has gone over limit
+
+if __name__ == '__main__':
+    app.run(debug=True, '')
