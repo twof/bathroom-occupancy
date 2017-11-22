@@ -8,7 +8,7 @@ import datetime
 import threading
 app = Flask(__name__)
 
-reserveBathroom = deque([])
+reservations = []
 now = datetime.datetime.now()
 response_url = ''
 token = 'U9asCwmXUbaFgAtsEpBZjIEj'
@@ -42,44 +42,53 @@ def remove_reservation_waisters():
 # Constraints only 1 person can have 1 reservation at a time
 @app.route('/reserve', methods=['POST'])
 def reserve_bathroom():
-    error = None
-    if request.method == 'POST':
-        user = request.form['user_id']
-        response_url = request.form['response_url']
-        response_token = request.form['token']
-        if response_token == token:
-            # first check, whether this user has a reservation
-            userReservation = checkUserReservation(user)
-            if userReservation:
-                data = {'response_type': 'ephemeral',
-                        'text': 'You\'ve already made a reservation!'}
-                if response_url != '':
-                    r = requests.post(response_url, json.dumps(data))
-                    if r.status_code != requests.codes.ok:
-                        data = {'Error': 'Status code: {r.status_code}'}
-                        return jsonify(data)
-                    else:
-                        return
-                else:
-                    return "response url empty"
-            else:
-                # new user reservation
-                reserveBathroom.append(Person(user))
-                data = {'text': 'Your reservation has been made!'}
-                if response_url != '':
-                    r = requests.post(response_url, json.dumps(data))
-                    if r.status_code != requests.codes.ok:
-                        data = {'Error': 'Status code: {r.status_code}'}
-                        return jsonify(data)
-                    else:
-                        return
-                else:
-                    return "response url empty"
-            # data = {'Success': 'Status code 200'}
-            return
-        else:
-            data = {'Error': 'Access denied!'}
-            return jsonify(data)
+    user = request.form['user_id']
+    response_url = request.form['response_url']
+
+    reservations.append(user)
+
+    data = {'text': 'Your reservation has been made!'}
+
+    r = requests.post(response_url, json.dumps(data))
+    print(r.text)
+
+    # if request.method == 'POST':
+    #     user = request.form['user_id']
+    #     response_url = request.form['response_url']
+    #     response_token = request.form['token']
+    #     if response_token == token:
+    #         # first check, whether this user has a reservation
+    #         userReservation = checkUserReservation(user)
+    #         if userReservation:
+    #             data = {'response_type': 'ephemeral',
+    #                     'text': 'You\'ve already made a reservation!'}
+    #             if response_url != '':
+    #                 r = requests.post(response_url, json.dumps(data))
+    #                 if r.status_code != requests.codes.ok:
+    #                     data = {'Error': 'Status code: {r.status_code}'}
+    #                     return jsonify(data)
+    #                 else:
+    #                     return
+    #             else:
+    #                 return "response url empty"
+    #         else:
+    #             # new user reservation
+    #             reserveBathroom.append(Person(user))
+    #             data = {'text': 'Your reservation has been made!'}
+    #             if response_url != '':
+    #                 r = requests.post(response_url, json.dumps(data))
+    #                 if r.status_code != requests.codes.ok:
+    #                     data = {'Error': 'Status code: {r.status_code}'}
+    #                     return jsonify(data)
+    #                 else:
+    #                     return
+    #             else:
+    #                 return "response url empty"
+    #         # data = {'Success': 'Status code 200'}
+    #         return
+    #     else:
+    #         data = {'Error': 'Access denied!'}
+    #         return jsonify(data)
 
 
 @app.route('/update', methods=['POST'])
