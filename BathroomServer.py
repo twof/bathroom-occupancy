@@ -93,18 +93,16 @@ def reserve_bathroom():
 
 @app.route('/update', methods=['POST'])
 def bathroom_update():
-    if request.method == 'POST':
-        value = request.form['occupancy']
-        if value != '':
-            if value[0] == 'F':
-                bathroomOccupied = False
-            else:
-                bathroomOccupied = True
-            data = {'Succesfully updated!'}
-            return jsonify(list(data))
-        else:
-            data = {'Error': 'Could not update'}
-            return jsonify(data)
+    value = request.get_json()['occupancy']
+    data = ""
+    if value == 'False':
+        bathroomOccupied = False
+    elif value == 'True':
+        bathroomOccupied = True
+    else:
+        data = 'Failiure :()'
+    data = 'Succesfully updated!'
+    return json.dumps(data)
 
 
 @app.route('/available', methods=['POST'])
