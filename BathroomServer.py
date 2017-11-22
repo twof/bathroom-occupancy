@@ -2,10 +2,10 @@ import sys
 import os.path
 from flask import Flask
 from flask import request
+from flask import jsonify
 from collections import deque
 import Person
 import datetime
-import jsonify
 import threading
 app = Flask(__name__)
 
