@@ -68,10 +68,7 @@ def reserve_bathroom():
             else:
                 # new user reservation
                 reserveBathroom.append(Person(user))
-                # data = {'token': dm_token,
-                #         'channel': user,
-                #         'as_user': 'true',
-                #         'text': 'Your reservation has been made!'}
+                data = {'text': 'Your reservation has been made!'}
                 # r = requests.post(dm_url, json.dumps(data))
                 # if r.status_code != requests.codes.ok:
                 #     data = {'Error': 'Status code: {r.status_code}'}
