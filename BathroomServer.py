@@ -22,15 +22,16 @@ def reserve_bathroom():
     if request.method == 'POST':
         data = list(request.values.to_dict().keys())[0]
         print(data)
-        data = json.loads(data)
-        user = data.user_id
+        #data = json.loads(data)
+        #user = data.user_id
         ## first check, whether this user has a reservation
-        userReservation = checkUserReseravation(user)
+        #userReservation = checkUserReseravation(user)
+        print
         if userReservation:
             data = {'text': 'You\'ve already made a reservation'}
             return jsonify(data)
         else:
-            reserveBathroom.append(Person(user))
+            #reserveBathroom.append(Person(user))
             #respond back with their reservation time
 
 @app.route('/available', methods = ['POST'])
@@ -59,4 +60,4 @@ def remove_reservation_waisters():
             # TO-DO: alert the removed user, their reservation has gone over limit
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=33507)
