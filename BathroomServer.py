@@ -49,7 +49,7 @@ def reserve_bathroom():
         response_token = request.form['token']
         if response_token == token:
             # first check, whether this user has a reservation
-            userReservation = checkUserReseravation(user)
+            userReservation = checkUserReservation(user)
             if userReservation:
                 data = {'response_type': 'ephemeral',
                         'text': 'You\'ve already made a reservation!'}
@@ -110,7 +110,7 @@ def bathroom_availability():
                 data = {'Error': 'Status code: {r.status_code}'}
                 return jsonify(data)
             else:
-                return jsonify()
+                return
         else:
             data = {'Error': 'Access denied'}
             return jsonify(data)
