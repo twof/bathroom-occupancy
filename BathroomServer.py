@@ -117,7 +117,7 @@ def bathroom_availability():
                 data = {'Error': 'Status code: {r.status_code}'}
                 return jsonify(data)
             else:
-                return
+                return "bad requests"
         else:
             return "response url empty"
     else:
