@@ -108,14 +108,14 @@ def bathroom_availability():
             data = {'text': 'Bathroom available!'}
         else:
             data = {'text': 'Bathroom not available!'}
-            
+
         if response_url != '' and response_token == token:
-            r = requests.post(response_url, json.dumps(data))
+            r = requests.post(response_url, jsonify(data))
             if r.status_code != requests.codes.ok:
                 data = {'Error': 'Status code: {r.status_code}'}
                 return jsonify(data)
             else:
-                return "bad requests"
+                return
         else:
             return "response url empty"
     else:
