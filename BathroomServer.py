@@ -58,6 +58,10 @@ def reserve_bathroom():
                     if r.status_code != requests.codes.ok:
                         data = {'Error': 'Status code: {r.status_code}'}
                         return jsonify(data)
+                    else:
+                        return "statuscode not okay"
+                else:
+                    return "response url empty"
             else:
                 # new user reservation
                 reserveBathroom.append(Person(user))
@@ -67,6 +71,10 @@ def reserve_bathroom():
                     if r.status_code != requests.codes.ok:
                         data = {'Error': 'Status code: {r.status_code}'}
                         return jsonify(data)
+                    else:
+                        return "statuscode not okay"
+                else:
+                    return "response url empty"
             # data = {'Success': 'Status code 200'}
             return
         else:
