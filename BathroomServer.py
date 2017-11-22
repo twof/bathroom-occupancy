@@ -111,7 +111,7 @@ def bathroom_availability():
             data = {'response_type': 'ephemeral',
                     'text': 'Bathroom not available!'}
 
-        if response_url != '' and response_token == token:
+        if response_url != '':
             r = requests.post(response_url, json.dumps(data))
             if r.status_code != requests.codes.ok:
                 data = {'Error': 'Status code: {r.status_code}'}
@@ -119,8 +119,8 @@ def bathroom_availability():
             else:
                 return
         else:
-            data = {'Error': 'Access denied'}
-            return jsonify(data)
+            return "response url empty"
+
 
 
 if __name__ == '__main__':
