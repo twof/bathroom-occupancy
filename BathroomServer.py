@@ -106,7 +106,7 @@ def bathroom_availability():
     if request.method == 'POST':
         response_url = request.form['response_url']
         response_token = request.form['token']
-        data = ''
+        data = {}
         if not bathroomOccupied:
             data = {'response_type': 'ephemeral',
                     'text': 'Bathroom available!'}
