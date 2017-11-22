@@ -51,7 +51,7 @@ def reserve_bathroom():
 
     r = requests.post(response_url, json.dumps(data))
     print(r.text)
-
+    return
     # if request.method == 'POST':
     #     user = request.form['user_id']
     #     response_url = request.form['response_url']
