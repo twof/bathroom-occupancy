@@ -11,10 +11,7 @@ app = Flask(__name__)
 reserveBathroom = deque([])
 now = datetime.datetime.now()
 response_url = ''
-dm_url = 'https://slack.com/api/chat.postMessage'
 token = 'U9asCwmXUbaFgAtsEpBZjIEj'
-dm_token = 'xoxp-2170879045-242313655713-270485729315',
-'-d4d1ade035d98920f721559ba543cb01'
 thirty_minutes_seconds = 30 * 60 * 60
 bathroomOccupied = False
 
