@@ -48,7 +48,7 @@ def reserve_bathroom():
                 if response_url != '':
                     r = requests.post(response_url, json.dumps(data))
                     if r.status_code != requests.codes.ok:
-                        data = {'Error': 'Status code: {r.status_code}'}
+                        data = {'Error': 'Status code: '{r.status_code}''}
                         return jsonify(data)
             data = {'Success': 'Status code 200'}
             return jsonify(data)
@@ -91,6 +91,8 @@ def bathroom_availability():
             if r.status_code != requests.codes.ok:
                 data = {'Error': 'Status code: {r.status_code}'}
                 return jsonify(data)
+            else:
+                return jsonify({})
         else:
             data = {'Error': 'Access denied'}
             return jsonify(data)
