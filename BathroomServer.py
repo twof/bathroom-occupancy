@@ -11,7 +11,10 @@ app = Flask(__name__)
 reserveBathroom = deque([])
 now = datetime.datetime.now()
 response_url = ''
+dm_url = 'https://slack.com/api/chat.postMessage'
 token = 'U9asCwmXUbaFgAtsEpBZjIEj'
+dm_token = 'xoxp-2170879045-242313655713-270485729315'
++ '-d4d1ade035d98920f721559ba543cb01'
 thirty_minutes_seconds = 30 * 60 * 60
 bathroomOccupied = False
 
@@ -65,16 +68,25 @@ def reserve_bathroom():
             else:
                 # new user reservation
                 reserveBathroom.append(Person(user))
-                data = {'text': 'Your reservation has been made!'}
-                if response_url != '':
-                    r = requests.post(response_url, json.dumps(data))
-                    if r.status_code != requests.codes.ok:
-                        data = {'Error': 'Status code: {r.status_code}'}
-                        return jsonify(data)
-                    else:
-                        return
+                data = {'token': dm_token,
+                        'channel': user,
+                        'as_user': 'true',
+                        'text': 'Your reservation has been made!'}
+                r = requests.post(dm_url, json.dumps(data))
+                if r.status_code != requests.codes.ok:
+                    data = {'Error': 'Status code: {r.status_code}'}
+                    return jsonify(data)
                 else:
-                    return "response url empty"
+                    return
+                # if response_url != '':
+                #     r = requests.post(response_url, json.dumps(data))
+                #     if r.status_code != requests.codes.ok:
+                #         data = {'Error': 'Status code: {r.status_code}'}
+                #         return jsonify(data)
+                #     else:
+                #         return
+                # else:
+                #     return "response url empty"
             # data = {'Success': 'Status code 200'}
             return
         else:
