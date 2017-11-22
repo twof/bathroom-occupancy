@@ -2,43 +2,97 @@ from flask import Flask, request, jsonify
 from collections import deque
 import Person
 import json
+import requests
 import datetime
 import threading
 app = Flask(__name__)
 
 reserveBathroom = deque([])
-bathroomOccupied = False
 now = datetime.datetime.now()
+response_url = ''
+token = 'U9asCwmXUbaFgAtsEpBZjIEj'
 thirty_minutes_seconds = 30 * 60 * 60
+bathroomOccupied = False
+
 
 @app.route('/')
 def hello():
     return 'Hello, welcome to Bathroom Server'
 
-## Constraints only 1 person can have 1 reservation at a time
-@app.route('/reserve', methods = ['POST'])
+
+# Constraints only 1 person can have 1 reservation at a time
+@app.route('/reserve', methods=['POST'])
 def reserve_bathroom():
     error = None
     if request.method == 'POST':
-        data = list(request.values.to_dict().keys())[0]
-        print(data)
-        #data = json.loads(data)
-        #user = data.user_id
-        ## first check, whether this user has a reservation
-        #userReservation = checkUserReseravation(user)
-        print
-        if userReservation:
-            data = {'text': 'You\'ve already made a reservation'}
+        user = request.form['user_id']
+        response_url = request.form['response_url']
+        response_token = request.form['token']
+        if response_token == token:
+            # first check, whether this user has a reservation
+            userReservation = checkUserReseravation(user)
+            if userReservation:
+                data = {'response_type': 'ephemeral',
+                        'text': 'You\'ve already made a reservation!'}
+                if response_url != '':
+                    r = requests.post(response_url, json.dumps(data))
+                    if r.status_code != requests.codes.ok:
+                        data = {'Error': 'Status code: {r.status_code}'}
+                        return jsonify(data)
+            else:
+                # new user reservation
+                reserveBathroom.append(Person(user))
+                data = {'response_type': 'ephemeral',
+                        'text': 'You\'r reservation has been made!'}
+                if response_url != '':
+                    r = requests.post(response_url, json.dumps(data))
+                    if r.status_code != requests.codes.ok:
+                        data = {'Error': 'Status code: {r.status_code}'}
+                        return jsonify(data)
+            data = {'Success': 'Status code 200'}
             return jsonify(data)
         else:
-            #reserveBathroom.append(Person(user))
-            #respond back with their reservation time
+            data = {'Error': 'Access denied!'}
+            return jsonify(data)
 
-@app.route('/available', methods = ['POST'])
+
+@app.route('/update', methods=['POST'])
+def bathroom_update():
+    if request.method == 'POST':
+        value = request.form['occupancy']
+        if value != '':
+            if value[0] == 'F':
+                bathroomOccupied = False
+            else:
+                bathroomOccupied = True
+            data = {'Succesfully updated!'}
+            return jsonify(list(data))
+        else:
+            data = {'Error': 'Could not update'}
+            return jsonify(data)
+
+
+@app.route('/available', methods=['POST'])
 def bathroom_availability():
     if request.method == 'POST':
-        data = request.data
-        bathroomOccupied = data.occupancy
+        response_url = request.form['response_url']
+        response_token = request.form['token']
+        data = ''
+        if not bathroomOccupied:
+            data = {'response_type': 'ephemeral',
+                    'text': 'Bathroom available!'}
+        else:
+            data = {'response_type': 'ephemeral',
+                    'text': 'Bathroom not available!'}
+
+        if response_url != '' and response_token == token:
+            r = requests.post(response_url, json.dumps(data))
+            if r.status_code != requests.codes.ok:
+                data = {'Error': 'Status code: {r.status_code}'}
+                return jsonify(data)
+        else:
+            data = {'Error': 'Access denied'}
+            return jsonify(data)
 
 
 # Check whether this user has made a reservation
@@ -46,8 +100,8 @@ def bathroom_availability():
 def checkUserReservation(user):
     for user_id in reserveBathroom:
         if user == user_id:
-            return true
-    return false
+            return True
+    return False
 
 
 # check the users whose reservation have gone over limit
@@ -55,9 +109,11 @@ def checkUserReservation(user):
 def remove_reservation_waisters():
     threading.Timer(10.0, remove_reservation_waisters).start()
     for person in reserve_bathroom:
-        if person.date is not None and now.timestamp() - person.date.timestamp() >= thirty_minutes_seconds:
+        difference = now.timestamp() - person.date.timestamp()
+        if person.date is not None and difference >= thirty_minutes_seconds:
             removed_user = reserve_bathroom.popLeft()
-            # TO-DO: alert the removed user, their reservation has gone over limit
+            # TO-DO: alert the removed user, their reservation has limit
+
 
 if __name__ == '__main__':
-    app.run(debug=True, port=33507)
+    app.run(debug=True, port=5000)
