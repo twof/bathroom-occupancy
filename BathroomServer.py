@@ -105,12 +105,10 @@ def bathroom_availability():
         response_token = request.form['token']
         data = None
         if not bathroomOccupied:
-            data = {'response_type': 'ephemeral',
-                    'text': 'Bathroom available!'}
+            data = {'text': 'Bathroom available!'}
         else:
-            data = {'response_type': 'ephemeral',
-                    'text': 'Bathroom not available!'}
-
+            data = {'text': 'Bathroom not available!'}
+            
         if response_url != '' and response_token == token:
             r = requests.post(response_url, json.dumps(data))
             if r.status_code != requests.codes.ok:
