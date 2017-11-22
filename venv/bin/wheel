@@ -1,4 +1,4 @@
-#!/Users/newuser/Documents/bathroom-occupancy/venv/bin/python
+#!/Users/newuser/Documents/bathroom-occupancy/venv/bin/python3.6
 
 # -*- coding: utf-8 -*-
 import re
