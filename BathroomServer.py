@@ -103,12 +103,9 @@ def bathroom_availability():
     if request.method == 'POST':
         response_url = request.form['response_url']
         response_token = request.form['token']
-        data = None
-        if not bathroomOccupied:
-            data = {'text': 'Bathroom available!'}
-        else:
+        data = {'text': 'Bathroom available!'}
+        if bathroomOccupied:
             data = {'text': 'Bathroom not available!'}
-
         if response_url != '' and response_token == token:
             r = requests.post(response_url, jsonify(data))
             if r.status_code != requests.codes.ok:
