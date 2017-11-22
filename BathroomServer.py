@@ -1,5 +1,3 @@
-import sys
-import os.path
 from flask import Flask
 from flask import request
 from flask import jsonify
@@ -8,8 +6,6 @@ import Person
 import datetime
 import threading
 app = Flask(__name__)
-
-#sys.path.append(os.path.join(os.path.dirname('/Models'), '..'))
 
 reserveBathroom = deque([])
 bathroomOccupied = False
