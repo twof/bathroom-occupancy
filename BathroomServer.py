@@ -1,6 +1,4 @@
-from flask import Flask
-from flask import request
-from flask import jsonify
+from flask import Flask, request, jsonify
 from collections import deque
 import Person
 import datetime
