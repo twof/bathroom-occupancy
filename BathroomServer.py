@@ -100,7 +100,7 @@ def bathroom_update():
     elif value == 'True':
         bathroomOccupied = True
         token = "U9asCwmXUbaFgAtsEpBZjIEj"
-        headers = {'Content-Type': 'application/json'}
+        headers = {'Content-Type': 'application/json; charset=utf-8'}
         create_im_request = requests.post("https://slack.com/api/im.open",
                                           data=json.dumps({"token": token,
                                                            "user": reservations[0],
