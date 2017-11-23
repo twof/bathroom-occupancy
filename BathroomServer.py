@@ -99,6 +99,15 @@ def bathroom_update():
         bathroomOccupied = False
     elif value == 'True':
         bathroomOccupied = True
+        token = "xoxp-2170879045-242313655713-270485729315-d"\
+                "4d1ade035d98920f721559ba543cb01"
+        header = {'Content-Type': 'application/json'}
+        create_im_request = requests.post("https://slack.com/api/im.open",
+                                          data=json.dumps({"token": token,
+                                                           "user": reservations[0],
+                                                           "return_im": True}),
+                                          header=header)
+        return create_im_request.text
     else:
         data = 'Failiure :()'
     data = 'Succesfully updated!'
